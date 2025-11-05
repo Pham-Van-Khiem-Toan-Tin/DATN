@@ -1,0 +1,55 @@
+# LaTeX intermediate and auxiliary files
+*.aux
+*.bbl
+*.blg
+*.brf
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.maf
+*.mtc*
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+
+# Output files
+*.pdf
+*.dvi
+*.ps
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+*.sav
+*~
+*.swp
+*.swo
+
+# Editor or IDE files
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# Build directories (if using latexmk or similar)
+latex.out/
+build/
+out/
+
+# Generated image previews
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.eps
+
+# Allow source files
+!main.tex
+!ref.bib
+!images/
