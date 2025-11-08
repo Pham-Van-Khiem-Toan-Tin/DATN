@@ -1,49 +1,36 @@
 @startuml
 left to right direction
-skinparam actorStyle awesome
-skinparam usecase {
-  BackgroundColor #F9F9F9
-  BorderColor #888
+
+actor "Người dùng" as User
+
+rectangle "Tài khoản" {
+  usecase UC_Manage as "Quản lý tài khoản"
+  usecase UC_ChangePwd as "Đổi mật khẩu"
+  usecase UC_Profile as "Chỉnh sửa thông tin cá nhân"
+
+  usecase UC_Auth as "Xác thực mật khẩu hiện tại"
+  usecase UC_Policy as "Kiểm tra chính sách mật khẩu"
+  usecase UC_Save as "Lưu thay đổi"
+  usecase UC_2FA as "Xác minh 2FA"
+  usecase UC_Email as "Gửi email thông báo"
 }
 
-actor "Khách hàng" as Customer
+' Kết nối mục tiêu trực tiếp
+User --> UC_ChangePwd
+User --> UC_Profile
+User --> UC_Manage
 
-rectangle "Chức năng: Đăng ký" {
-  ' --- Use cases chính/bắt buộc ---
-  usecase "Nhập thông tin đăng ký" as UC_Input
-  usecase "Giới hạn tần suất\n(Rate limit / Anti-abuse)" as UC_Rate
-  usecase "Kiểm tra định dạng dữ liệu" as UC_Validate
-  usecase "Kiểm tra chính sách mật khẩu" as UC_Policy
-  usecase "Kiểm tra trùng email/SDT" as UC_Unique
-  usecase "Gửi mã/đường dẫn xác minh" as UC_SendVerify
-  usecase "Xác minh email/OTP" as UC_Verify
-  usecase "Tạo tài khoản" as UC_Create
-  usecase "Chuyển hướng sau đăng ký" as UC_Redirect
+' (Tùy chọn) thể hiện nó nằm trong ngữ cảnh quản lý
+UC_Manage <|.. UC_ChangePwd : <<extend>>
+UC_Manage <|.. UC_Profile : <<extend>>
 
-  ' --- Nhánh tùy chọn / lỗi ---
-  usecase "Tự động đăng nhập\n(sau khi xác minh)" as UC_AutoLogin
-  usecase "Hiển thị thông báo lỗi" as UC_Error
-}
+' Luồng bắt buộc khi đổi mật khẩu
+UC_ChangePwd --> UC_Auth : <<include>>
+UC_ChangePwd --> UC_Policy : <<include>>
+UC_ChangePwd --> UC_Save : <<include>>
 
-' Actor khởi phát
-Customer --> UC_Input
-
-' --- Chuỗi bước bắt buộc (include) ---
-UC_Input   --> UC_Rate       : <<include>>
-UC_Input   --> UC_Validate   : <<include>>
-UC_Validate --> UC_Policy    : <<include>>
-UC_Validate --> UC_Unique    : <<include>>
-UC_Unique  --> UC_SendVerify : <<include>>
-UC_SendVerify --> UC_Verify  : <<include>>
-UC_Verify  --> UC_Create     : <<include>>
-UC_Create  --> UC_Redirect   : <<include>>
-
-' --- Nhánh tùy chọn ---
-UC_AutoLogin ..> UC_Create : <<extend>> [Cho phép auto-login]
-
-' --- Nhánh lỗi (extend) ---
-UC_Error ..> UC_Validate : <<extend>> [Thiếu/định dạng sai]
-UC_Error ..> UC_Unique   : <<extend>> [Email/SDT đã tồn tại]
-UC_Error ..> UC_Verify   : <<extend>> [Mã sai/hết hạn]
+' Nhánh điều kiện
+UC_ChangePwd ..> UC_2FA : <<extend>>\n(khi bật 2FA)
+UC_ChangePwd ..> UC_Email : <<extend>>\n(khi cấu hình gửi mail)
 
 @enduml
