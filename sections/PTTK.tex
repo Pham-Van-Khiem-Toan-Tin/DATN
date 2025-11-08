@@ -545,3 +545,158 @@
     \end{itemize} \\
     \hline
 \end{longtable}
+
+
+\subsection{Usecase Đặt hàng}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/usecase đặt hàng.png}
+    \caption{Sơ đồ Use Case Đặt hàng}
+\end{figure}
+
+\begin{longtable}{|m{4cm}|m{10cm}|}
+    \hline
+    \textbf{Tên Use Case} & \textbf{Đặt hàng} \\
+    \hline
+    Tác nhân & Khách hàng \\
+    \hline
+    Mô tả &
+    Cho phép khách hàng xác nhận giỏ hàng, chọn địa chỉ giao hàng, chọn phương thức vận chuyển, (tuỳ chọn) áp dụng mã giảm giá, xem tóm tắt đơn và thực hiện thanh toán để hoàn tất đơn hàng. \\
+    \hline
+    Điều kiện kích hoạt &
+    Khách hàng chọn hành động ``Đặt hàng/Checkout'' từ trang giỏ hàng. \\
+    \hline
+    Tiền điều kiện &
+    \begin{itemize}
+        \item Khách hàng đã đăng nhập.
+        \item Giỏ hàng có ít nhất một sản phẩm hợp lệ.
+        \item Hệ thống sẵn sàng (kết nối CSDL, dịch vụ thanh toán/ship còn hoạt động).
+    \end{itemize} \\
+    \hline
+    Hậu điều kiện &
+    \begin{itemize}
+        \item Nếu thành công: Đơn hàng được tạo với trạng thái ban đầu (ví dụ: \textit{Chờ thanh toán}/\textit{Đã thanh toán} tùy phương thức); tồn kho được trừ/giữ tạm; gửi thông báo xác nhận.
+        \item Nếu thất bại: Không tạo đơn hoặc huỷ đơn tạm; giỏ hàng giữ nguyên; hiển thị thông báo lỗi phù hợp.
+    \end{itemize} \\
+    \hline
+    Luồng sự kiện chính &
+    \begin{enumerate}[label=\arabic*.]
+        \item Hệ thống hiển thị trang \textit{Xác nhận giỏ hàng} (danh sách sản phẩm, số lượng, giá, phí tạm tính).
+        \item Khách hàng chọn \textit{Địa chỉ giao hàng} từ danh sách địa chỉ có sẵn.
+        \item Hệ thống \textbf{<<include>>} kiểm tra tồn kho và tính lại tổng tiền (nếu có thay đổi giá/phí).
+        \item Hệ thống \textbf{<<include>>} hiển thị và cho phép chọn \textit{Phương thức vận chuyển} (phí, thời gian dự kiến).
+        \item (Tuỳ chọn) Khách hàng nhập \textit{Mã giảm giá}; hệ thống \textbf{<<extend>>} \textit{Áp dụng mã giảm giá}.
+        \item Hệ thống hiển thị \textit{Tóm tắt đơn hàng} (sản phẩm, địa chỉ, vận chuyển, giảm giá, tổng thanh toán).
+        \item Khách hàng xác nhận ``Đặt hàng''.
+        \item Hệ thống tạo \textit{đơn hàng tạm} và \textbf{giữ tạm tồn kho} trong thời gian cho phép.
+        \item Hệ thống \textbf{<<include>>} chuyển sang \textit{Thanh toán} theo phương thức đã chọn.
+        \item Sau khi thanh toán thành công, hệ thống cập nhật trạng thái đơn, gửi xác nhận, và hiển thị trang \textit{Đặt hàng thành công}.
+        \item Kết thúc Use Case.
+    \end{enumerate} \\
+    \hline
+    Luồng sự kiện phụ &
+    \begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=1.2em]
+        \item \textbf{Chưa có địa chỉ phù hợp}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Khách hàng không có địa chỉ hoặc muốn sửa hoặc thêm địa chỉ mới.
+                \item Hệ thống chọn chức năng phù hợp trong quản lí địa chỉ giao hàng để thêm hoặc sửa địa chỉ.
+                \item Quay lại checkout và tiếp tục.
+            \end{enumerate}
+        \item \textbf{Áp dụng mã giảm giá thất bại}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Mã hết hạn/không hợp lệ hoặc không đáp ứng điều kiện.
+                \item Hệ thống thông báo lỗi, không áp dụng giảm giá; khách hàng có thể nhập mã khác hoặc bỏ qua.
+            \end{enumerate}
+        \item \textbf{Hết hàng hoặc thay đổi giá trong lúc đặt hàng}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Hệ thống phát hiện một số sản phẩm hết tồn hoặc giá hoặc khuyến mãi thay đổi.
+                \item Hệ thống thông báo và yêu cầu khách hàng xác nhận lại; cho phép quay về giỏ hàng để điều chỉnh.
+            \end{enumerate}
+        \item \textbf{Thanh toán thất bại hoặc hủy giữa chừng}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Giao dịch bị từ chối hoặc hết thời gian hoặc khách hủy.
+                \item Hệ thống cập nhật đơn về trạng thái phù hợp; giải phóng tồn kho giữ tạm.
+            \end{enumerate}
+    \end{enumerate} \\
+    \hline
+    Các yêu cầu đặc biệt &
+    \begin{itemize}
+        \item \textbf{Bắt buộc} chọn phương thức vận chuyển và thực hiện thanh toán trong luồng đặt hàng và thanh toán.
+        \item \textbf{Tùy chọn} quản lý địa chỉ, áp mã giảm giá trong đặt hàng.
+        \item Giữ tạm tồn kho trong thời gian giới hạn; tự động giải phóng nếu thanh toán thất bại/hết hạn.
+        \item Tính toán tổng tiền theo thời gian thực (phí ship, thuế, giảm giá); chống đua giá bằng cách đóng dấu phiên bản báo giá.
+    \end{itemize} \\
+    \hline
+\end{longtable}
+
+
+\subsection{Usecase Theo dõi đơn hàng}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/usecase theo dõi đơn hàng.png}
+    \caption{Sơ đồ Use Case Theo dõi đơn hàng}
+\end{figure}
+
+\begin{longtable}{|m{4cm}|m{10cm}|}
+    \hline
+    \textbf{Tên Use Case} & \textbf{Theo dõi đơn hàng} \\
+    \hline
+    Tác nhân & Khách hàng \\
+    \hline
+    Mô tả &
+    Cho phép khách hàng xem danh sách đơn hàng của mình, trạng thái vận chuyển theo thời gian thực, lọc/tìm kiếm đơn; từ đây có thể thực hiện các hành động mở rộng: \textit{Xem chi tiết}, \textit{Hủy đơn hàng} (khi còn cho phép), \textit{Xác nhận Đã nhận hàng} (khi đã giao). \\
+    \hline
+    Điều kiện kích hoạt &
+    Khách hàng truy cập mục \textit{Theo dõi đơn hàng} trong tài khoản hoặc từ thông báo/liên kết lịch sử mua hàng. \\
+    \hline
+    Tiền điều kiện &
+    \begin{itemize}
+        \item Khách hàng đã đăng nhập.
+        \item Hệ thống có dữ liệu đơn hàng của khách (ít nhất là 0 đơn).
+    \end{itemize} \\
+    \hline
+    Hậu điều kiện &
+    \begin{itemize}
+        \item Nếu thành công: Danh sách đơn hiển thị; trạng thái mỗi đơn được cập nhật; các thao tác mở rộng được kích hoạt theo điều kiện trạng thái.
+        \item Nếu thất bại: Không thay đổi dữ liệu; hiển thị thông báo lỗi phù hợp.
+    \end{itemize} \\
+    \hline
+    Luồng sự kiện chính &
+    \begin{enumerate}[label=\arabic*.]
+        \item Hệ thống hiển thị danh sách đơn hàng của khách: mã đơn, ngày tạo, tổng tiền, trạng thái hiện tại, tiến trình vận chuyển.
+        \item Khách hàng có thể tìm kiếm/lọc theo mã đơn, trạng thái, thời gian.
+        \item Khách hàng chọn một đơn để \textbf{Xem chi tiết}.
+        \item Nếu trạng thái đơn cho phép hủy (ví dụ: \textit{Chờ xử lý}), khách có thể chọn \textbf{Hủy đơn hàng}.
+        \item Nếu trạng thái đơn là \textit{Đã giao}, khách có thể chọn \textbf{Đã nhận hàng}.
+        \item Hệ thống cập nhật giao diện sau mỗi hành động; tiếp tục cho phép theo dõi các đơn khác.
+        \item Kết thúc Use Case.
+    \end{enumerate} \\
+    \hline
+    Luồng sự kiện phụ &
+    \begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=1.2em]
+        \item \textbf{Không có đơn hàng}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Hệ thống hiển thị danh sách rỗng và gợi ý quay lại mua sắm.
+            \end{enumerate}
+        \item \textbf{Đơn không thuộc về khách hàng}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Khách mở liên kết đơn không thuộc tài khoản.
+                \item Hệ thống từ chối truy cập và hiển thị thông báo quyền hạn.
+            \end{enumerate}
+        \item \textbf{Dữ liệu trạng thái trễ hoặc dịch vụ vận chuyển lỗi}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Hệ thống không lấy được cập nhật mới.
+                \item Hiển thị trạng thái gần nhất và thông báo thử lại sau.
+            \end{enumerate}
+    \end{enumerate} \\
+    \hline
+    Các yêu cầu đặc biệt &
+    \begin{itemize}
+        \item Đồng bộ trạng thái theo thời gian thực (hoặc gần thực) từ hệ thống xử lý đơn/đơn vị vận chuyển.
+        \item Chỉ hiển thị/hỗ trợ hành động phù hợp với trạng thái đơn (RBAC + state guard).
+        \item Phân trang/tải thêm; tìm kiếm và lọc hiệu quả trên tập dữ liệu lớn.
+    \end{itemize} \\
+    \hline
+\end{longtable}
+
+
