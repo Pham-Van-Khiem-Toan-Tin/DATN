@@ -1,49 +1,23 @@
 @startuml
-left to right direction
-skinparam actorStyle awesome
-skinparam usecase {
-  BackgroundColor #F9F9F9
-  BorderColor #888
-}
+actor "Khách hàng" as Cus
+participant "UI" as UI
+participant "Cart Service" as Cart
+participant "Product Service" as P
+database "DB" as DB
 
-actor "Khách hàng" as Customer
+== Thêm/Sửa/Xóa ==
+Cus -> UI: Thêm/Chỉnh số lượng/Xóa sản phẩm
+UI -> P: Kiểm tra tồn kho & giá hiện tại
+P -> DB: Truy vấn tồn/giá
+DB --> P: OK hoặc hết hàng
+P --> UI: Kết quả kiểm tra
+UI -> Cart: Cập nhật giỏ (add/update/remove)
+Cart -> DB: Lưu giỏ hàng
+DB --> Cart: OK
+Cart --> UI: Tổng tiền tạm tính
+UI -> Cus: Hiển thị giỏ/tổng tiền
 
-rectangle "Chức năng: Đăng ký" {
-  ' --- Use cases chính/bắt buộc ---
-  usecase "Nhập thông tin đăng ký" as UC_Input
-  usecase "Giới hạn tần suất\n(Rate limit / Anti-abuse)" as UC_Rate
-  usecase "Kiểm tra định dạng dữ liệu" as UC_Validate
-  usecase "Kiểm tra chính sách mật khẩu" as UC_Policy
-  usecase "Kiểm tra trùng email/SDT" as UC_Unique
-  usecase "Gửi mã/đường dẫn xác minh" as UC_SendVerify
-  usecase "Xác minh email/OTP" as UC_Verify
-  usecase "Tạo tài khoản" as UC_Create
-  usecase "Chuyển hướng sau đăng ký" as UC_Redirect
-
-  ' --- Nhánh tùy chọn / lỗi ---
-  usecase "Tự động đăng nhập\n(sau khi xác minh)" as UC_AutoLogin
-  usecase "Hiển thị thông báo lỗi" as UC_Error
-}
-
-' Actor khởi phát
-Customer --> UC_Input
-
-' --- Chuỗi bước bắt buộc (include) ---
-UC_Input   --> UC_Rate       : <<include>>
-UC_Input   --> UC_Validate   : <<include>>
-UC_Validate --> UC_Policy    : <<include>>
-UC_Validate --> UC_Unique    : <<include>>
-UC_Unique  --> UC_SendVerify : <<include>>
-UC_SendVerify --> UC_Verify  : <<include>>
-UC_Verify  --> UC_Create     : <<include>>
-UC_Create  --> UC_Redirect   : <<include>>
-
-' --- Nhánh tùy chọn ---
-UC_AutoLogin ..> UC_Create : <<extend>> [Cho phép auto-login]
-
-' --- Nhánh lỗi (extend) ---
-UC_Error ..> UC_Validate : <<extend>> [Thiếu/định dạng sai]
-UC_Error ..> UC_Unique   : <<extend>> [Email/SDT đã tồn tại]
-UC_Error ..> UC_Verify   : <<extend>> [Mã sai/hết hạn]
-
+alt Hết hàng / số lượng không hợp lệ
+  UI -> Cus: Thông báo lỗi và giữ giá trị cũ
+end
 @enduml

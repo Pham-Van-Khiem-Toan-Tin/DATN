@@ -210,7 +210,7 @@
 	\fontsize{15pt}{20pt}   
 	\textbf{ĐỀ TÀI: }\\
 	\fontsize{14pt}{16pt}\selectfont
-	\bfseries Xây dựng website bán đồ điện tử
+	\bfseries Xây dựng website microservice bán đồ điện tử
 \end{center}
 
 \vspace{0.5cm}
@@ -227,7 +227,7 @@
 \begin{center}
 \fontsize{13pt}{16pt}\selectfont
 \textbf{\begin{tabular}{l l}
-GVHD:& ThS. Nguyễn Thị Huyền Linh
+GVHD:& TS. Phạm Huyền Linh
 \\
 SVTH:& Phạm Văn Khiêm\\
 MSSV: & 20195892\\
@@ -258,11 +258,11 @@ Lớp:&{\bfseries Toán - Tin 01}
 \fontsize{16pt}{16pt}\selectfont  \textbf{NHẬN XÉT CỦA GIẢNG VIÊN HƯỚNG DẪN}
 \end{center}
 \fontsize{14pt}{14pt}\textbf{1. Mục đích và nội dung của đồ án}\\
-Thực hành phân tích, thiết kế và cài đặt một hệ thống đơn giản
+Thực hành phân tích, thiết kế và cài đặt một hệ thống phân tán.
 \vspace{3cm}
 \\
 \textbf{2. Kết quả đạt được}\\
-Website bán hàng
+Website microservice bán hàng điện tử
 \vspace{3cm}
 \\
 \textbf{3. Ý thức làm việc của sinh viên} \\
@@ -278,7 +278,7 @@ Tốt
 \hspace{8.8cm} \bf Giảng viên hướng dẫn
 
 \vspace{3 cm}
-\hspace{8.3cm} {\bf ThS. Nguyễn Thị Huyền Linh}\rm
+\hspace{8.3cm} {\bf TS. Phạm Huyền Linh}\rm
 	%\end{center}	
 %\end{minipage}
 \restoregeometry
@@ -290,7 +290,7 @@ Tốt
 \fontsize{13pt}{16pt}\selectfont
 \bigskip
 \\
-\indent Đầu tiên, em xin gửi lời cảm ơn đến ThS. Nguyễn Thị Huyền Linh, cô đã chỉ bảo em tận
+\indent Đầu tiên, em xin gửi lời cảm ơn đến TS. Phạm Huyền Linh, cô đã chỉ bảo em tận
 tình trong thời gian học tập, thầy luôn giúp đỡ và nhắc nhở trong quá trình
 nghiên cứu và thực hiện đồ án. Không có sự giúp đỡ và chỉ bảo của cô, em sẽ không thể hoàn thiện đồ án này.\\
 \indent Em xin gửi lời cảm ơn đến Đại học Bách Khoa Hà Nội, đặc biệt là
@@ -334,8 +334,10 @@ tập và phát triển.\\
 
 \input{sections/Khaosat.tex}
 \input{sections/PTTK.tex}
-\addcontentsline{toc}{chapter}{Kết luận}
-\addcontentsline{toc}{chapter}{Tài liệu tham khảo}
-\bibliographystyle{plain}   % hoặc ieeetr, apalike...
-\bibliography{ref}   
+\input{sections/TKCSDL.tex}
+\input{sections/ketqua.tex}
+\addcontentsline{toc}{chapter}{Kết luận} % nếu Kết luận là \chapter*{}
+\bibliographystyle{plain} % hoặc ieeetr, apalike...
+\bibliography{ref}
+\nocite{*}
 \end{document}
