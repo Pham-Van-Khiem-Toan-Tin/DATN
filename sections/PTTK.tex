@@ -693,10 +693,469 @@
     Các yêu cầu đặc biệt &
     \begin{itemize}
         \item Đồng bộ trạng thái theo thời gian thực (hoặc gần thực) từ hệ thống xử lý đơn/đơn vị vận chuyển.
-        \item Chỉ hiển thị/hỗ trợ hành động phù hợp với trạng thái đơn (RBAC + state guard).
-        \item Phân trang/tải thêm; tìm kiếm và lọc hiệu quả trên tập dữ liệu lớn.
+        \item Chỉ hiển thị hoặc hỗ trợ hành động phù hợp với trạng thái đơn (RBAC + state guard).
+        \item Phân trang hoặc tải thêm; tìm kiếm và lọc hiệu quả trên tập dữ liệu lớn.
     \end{itemize} \\
     \hline
 \end{longtable}
 
+
+\subsection{Usecase Quản lí sản phẩm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/usecase quản lí sản phẩm.png}
+    \caption{Sơ đồ Use Case Quản lí sản phẩm}
+\end{figure}
+
+\begin{longtable}{|m{4cm}|m{10cm}|}
+    \hline
+    \textbf{Tên Use Case} & \textbf{Quản lí sản phẩm} \\
+    \hline
+    Tác nhân &
+    Nhân viên \\
+    \hline
+    Mô tả &
+    Cho phép nhân viên tạo/cập nhật/xoá và tra cứu sản phẩm, quản lí thông tin cơ bản (SKU, tên, mô tả), phân loại, giá, tồn kho, media; quản lí thuộc tính/bộ thuộc tính. \\
+    \hline
+    Điều kiện kích hoạt &
+    Nhân viên chọn chức năng quản lý sản phẩm. \\
+    \hline
+    Tiền điều kiện & Tác nhân đã đăng nhập và có quyền phù hợp (RBAC). \\
+    \hline
+    Hậu điều kiện &
+    \begin{itemize}
+        \item Dữ liệu sản phẩm nhất quán; chỉ mục tìm kiếm được đồng bộ.
+        \item Ghi nhận cho các thay đổi.
+    \end{itemize} \\
+    \hline
+    Luồng sự kiện chính &
+    \begin{enumerate}[label=\arabic*.]
+        \item Tác nhân chọn chức năng quản lý sản phẩm.
+        \item Tác nhân chọn một thao tác: \textit{Thêm mới}, \textit{Chỉnh sửa}, \textit{Xoá}, hoặc \textit{Tìm kiếm nâng cao}.
+        \item Nếu \textit{Thêm mới}/\textit{Chỉnh sửa}: hiển thị biểu mẫu; tác nhân nhập/điều chỉnh thông tin (SKU, tên, mô tả, danh mục, giá, tồn, media).
+        \item Tác nhân chọn lưu thông tin.
+        \item Hệ thống Kiểm tra hợp lệ dữ liệu (bắt buộc, định dạng, ràng buộc giá/tồn).
+        \item Hệ thống Kiểm tra duy nhất SKU khi tạo mới hoặc đổi SKU.
+        \item (Tuỳ chọn) Tác nhân chọn Quản lí thuộc tính và gán cho sản phẩm.
+        \item Hệ thống lưu thay đổi;
+        \item Kết thúc Use Case.
+    \end{enumerate} \\
+    \hline
+    Luồng sự kiện phụ &
+    \begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=1.2em]
+        \item \textbf{Dữ liệu không hợp lệ}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Trường bắt buộc thiếu, giá/tồn âm, định dạng sai.
+                \item Hệ thống thông báo lỗi, đánh dấu trường vi phạm và giữ dữ liệu đã nhập.
+            \end{enumerate}
+        \item \textbf{Hủy bỏ việc quản lý sản phẩm}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Tác nhân hủy bỏ việc quản lý sản phẩm.
+                \item Hệ thống bỏ qua và trở về giao diện chính
+                \item 3.	Kết thúc Use Case.
+            \end{enumerate}
+    \end{enumerate} \\
+    \hline
+    Các yêu cầu đặc biệt & Không có\\
+    \hline
+\end{longtable}
+
+
+\subsection{Usecase Quản lí thuộc tính}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/usecase quản lí thuộc tính.png}
+    \caption{Sơ đồ Use Case Quản lí thuộc tính}
+\end{figure}
+
+\begin{longtable}{|m{4cm}|m{10cm}|}
+    \hline
+    \textbf{Tên Use Case} & \textbf{Quản lí thuộc tính} \\
+    \hline
+    Tác nhân & Nhân viên \\
+    \hline
+    Mô tả &
+    Cho phép nhân viên tạo, chỉnh sửa, xoá và quản lý các thuộc tính của sản phẩm như màu sắc, kích thước, chất liệu... Các thuộc tính này có thể được gán vào từng sản phẩm cụ thể để phục vụ cho việc hiển thị, tìm kiếm và lọc sản phẩm. \\
+    \hline
+    Điều kiện kích hoạt &
+    Nhân viên chọn chức năng \textit{Quản lí thuộc tính} trong hệ thống quản trị. \\
+    \hline
+    Tiền điều kiện & 
+    Tác nhân đã đăng nhập và có quyền truy cập vào chức năng quản lý thuộc tính. \\
+    \hline
+    Hậu điều kiện &
+    \begin{itemize}
+        \item Dữ liệu thuộc tính được cập nhật và lưu trữ chính xác trong hệ thống.
+        \item Các sản phẩm liên quan được đồng bộ thuộc tính mới (nếu có).
+    \end{itemize} \\
+    \hline
+    Luồng sự kiện chính &
+    \begin{enumerate}[label=\arabic*.]
+        \item Tác nhân chọn chức năng \textit{Quản lí thuộc tính}.
+        \item Hệ thống hiển thị danh sách các thuộc tính hiện có.
+        \item Tác nhân chọn thao tác: \textit{Thêm mới}, \textit{Chỉnh sửa} hoặc \textit{Xoá} thuộc tính.
+        \item Nếu \textit{Thêm mới}/\textit{Chỉnh sửa}: hệ thống hiển thị biểu mẫu; tác nhân nhập hoặc cập nhật thông tin thuộc tính (tên, kiểu dữ liệu, giá trị mặc định, danh sách lựa chọn...).
+        \item Tác nhân chọn \textit{Lưu}.
+        \item Hệ thống kiểm tra tính hợp lệ dữ liệu (tên trùng, kiểu không hợp lệ...).
+        \item Hệ thống lưu thay đổi và cập nhật danh sách thuộc tính.
+        \item Kết thúc Use Case.
+    \end{enumerate} \\
+    \hline
+    Luồng sự kiện phụ &
+    \begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=1.2em]
+        \item \textbf{Dữ liệu không hợp lệ}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Tên thuộc tính bị trùng hoặc bỏ trống.
+                \item Hệ thống hiển thị thông báo lỗi, yêu cầu nhập lại.
+            \end{enumerate}
+        \item \textbf{Xóa thuộc tính đang sử dụng}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Tác nhân chọn xoá thuộc tính đang được gán cho sản phẩm.
+                \item Hệ thống hiển thị cảnh báo và yêu cầu xác nhận trước khi thực hiện.
+            \end{enumerate}
+        \item \textbf{Hủy thao tác}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Tác nhân hủy bỏ thao tác đang thực hiện.
+                \item Hệ thống trở về giao diện danh sách thuộc tính.
+            \end{enumerate}
+    \end{enumerate} \\
+    \hline
+    Các yêu cầu đặc biệt & 
+    \begin{itemize}
+        \item Hỗ trợ các loại thuộc tính cơ bản: văn bản, số, danh sách chọn, ngày giờ.
+        \item Tự động kiểm tra trùng tên thuộc tính trước khi lưu.
+        \item Cho phép lọc và sắp xếp danh sách thuộc tính theo tên hoặc loại.
+    \end{itemize} \\
+    \hline
+\end{longtable}
+
+
+\subsection{Usecase Quản lí đơn hàng}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/usecase quản lí đơn hàng.png}
+    \caption{Sơ đồ Use Case Quản lí đơn hàng}
+\end{figure}
+
+\begin{longtable}{|m{4cm}|m{10cm}|}
+    \hline
+    \textbf{Tên Use Case} & \textbf{Quản lí đơn hàng} \\
+    \hline
+    Tác nhân & Nhân viên / Quản trị viên \\
+    \hline
+    Mô tả &
+    Cho phép nhân viên quản lý danh sách đơn hàng, bao gồm: tìm kiếm, xem chi tiết thông tin đơn hàng và duyệt (xác nhận) các đơn chờ xử lý. Hệ thống giúp đảm bảo việc theo dõi và cập nhật trạng thái đơn hàng được chính xác, kịp thời. \\
+    \hline
+    Điều kiện kích hoạt &
+    Nhân viên chọn chức năng \textit{Quản lí đơn hàng} trong giao diện hệ thống. \\
+    \hline
+    Tiền điều kiện &
+    \begin{itemize}
+        \item Tác nhân đã đăng nhập và có quyền truy cập quản lý đơn hàng.
+        \item Hệ thống kết nối ổn định với cơ sở dữ liệu đơn hàng.
+    \end{itemize} \\
+    \hline
+    Hậu điều kiện &
+    \begin{itemize}
+        \item Dữ liệu đơn hàng được cập nhật chính xác (sau khi duyệt hoặc thay đổi trạng thái).
+        \item Lịch sử thao tác được ghi nhận để truy vết. 
+    \end{itemize} \\
+    \hline
+    Luồng sự kiện chính &
+    \begin{enumerate}[label=\arabic*.]
+        \item Tác nhân chọn chức năng \textit{Quản lí đơn hàng}.
+        \item Hệ thống hiển thị danh sách tất cả các đơn hàng cùng bộ lọc (mã đơn, khách hàng, ngày đặt, trạng thái...).
+        \item Tác nhân có thể nhập thông tin tìm kiếm hoặc áp dụng bộ lọc để lọc đơn hàng theo yêu cầu.
+        \item Hệ thống hiển thị danh sách kết quả tương ứng.
+        \item Tác nhân chọn một đơn hàng cụ thể để xem chi tiết.
+        \item Hệ thống hiển thị thông tin chi tiết đơn hàng (sản phẩm, số lượng, giá, khách hàng, địa chỉ giao hàng, trạng thái thanh toán, trạng thái giao hàng...).
+        \item Nếu đơn hàng ở trạng thái “Chờ duyệt”, tác nhân chọn thao tác \textit{Duyệt đơn hàng}.
+        \item Hệ thống kiểm tra tính hợp lệ (đơn chưa duyệt, thanh toán hợp lệ, hàng còn tồn...).
+        \item Hệ thống cập nhật trạng thái đơn sang “Đã duyệt” và ghi nhận thông tin người duyệt.
+        \item Kết thúc Use Case.
+    \end{enumerate} \\
+    \hline
+    Luồng sự kiện phụ &
+    \begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=1.2em]
+        \item \textbf{Không có kết quả tìm kiếm}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Hệ thống hiển thị thông báo “Không tìm thấy đơn hàng phù hợp”.
+                \item Tác nhân có thể thay đổi điều kiện lọc hoặc tìm kiếm khác.
+            \end{enumerate}
+        \item \textbf{Đơn hàng đã được duyệt trước đó}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Tác nhân chọn duyệt lại một đơn đã được duyệt.
+                \item Hệ thống thông báo đơn hàng này đã được xử lý, không thể duyệt lại.
+            \end{enumerate}
+        \item \textbf{Lỗi khi cập nhật trạng thái}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Xảy ra lỗi kết nối hoặc cập nhật cơ sở dữ liệu.
+                \item Hệ thống hiển thị thông báo lỗi và giữ nguyên trạng thái cũ.
+            \end{enumerate}
+        \item \textbf{Hủy thao tác}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Tác nhân hủy bỏ thao tác duyệt hoặc thoát khỏi màn hình chi tiết đơn hàng.
+                \item Hệ thống quay về danh sách đơn hàng ban đầu.
+            \end{enumerate}
+    \end{enumerate} \\
+    \hline
+    Các yêu cầu đặc biệt &
+    \begin{itemize}
+        \item Cho phép tìm kiếm đơn hàng theo nhiều tiêu chí (mã đơn, tên khách hàng, ngày, trạng thái...).
+        \item Hỗ trợ phân trang, sắp xếp và lọc theo trạng thái đơn hàng.
+        \item Khi duyệt đơn, hệ thống tự động ghi lại thời gian duyệt và người thực hiện.
+        \item Bảo đảm tính toàn vẹn dữ liệu khi cập nhật trạng thái đơn hàng.
+    \end{itemize} \\
+    \hline
+\end{longtable}
+
+
+\subsection{Usecase Quản lí danh mục}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/usecase quản lí danh mục.png}
+    \caption{Sơ đồ Use Case Quản lí danh mục}
+\end{figure}
+
+\begin{longtable}{|m{4cm}|m{10cm}|}
+    \hline
+    \textbf{Tên Use Case} & \textbf{Quản lí danh mục} \\
+    \hline
+    Tác nhân & Nhân viên \\
+    \hline
+    Mô tả &
+    Cho phép nhân viên tạo, chỉnh sửa, xoá và tra cứu danh mục sản phẩm. Danh mục giúp tổ chức sản phẩm theo nhóm (ví dụ: Áo, Quần, Giày, Phụ kiện) để hỗ trợ việc hiển thị, tìm kiếm và lọc trong hệ thống. \\
+    \hline
+    Điều kiện kích hoạt &
+    Nhân viên chọn chức năng \textit{Quản lí danh mục} trong giao diện quản trị. \\
+    \hline
+    Tiền điều kiện &
+    \begin{itemize}
+        \item Tác nhân đã đăng nhập và có quyền truy cập quản lý danh mục.
+        \item Hệ thống kết nối ổn định với cơ sở dữ liệu.
+    \end{itemize} \\
+    \hline
+    Hậu điều kiện &
+    \begin{itemize}
+        \item \textbf{Nếu thành công:}  
+        Danh mục được tạo, chỉnh sửa hoặc xoá thành công; dữ liệu được cập nhật chính xác trong hệ thống; các sản phẩm liên quan được đồng bộ lại với danh mục mới (nếu có thay đổi); hiển thị thông báo thao tác thành công.
+        \item \textbf{Nếu thất bại:}  
+        Thông tin danh mục không được thay đổi; hệ thống hiển thị thông báo lỗi (ví dụ: tên trùng, danh mục cha không hợp lệ, lỗi kết nối...); người dùng có thể sửa lại hoặc hủy thao tác.
+    \end{itemize} \\
+    \hline
+    Luồng sự kiện chính &
+    \begin{enumerate}[label=\arabic*.]
+        \item Tác nhân chọn chức năng \textit{Quản lí danh mục}.
+        \item Hệ thống hiển thị danh sách danh mục hiện có theo dạng cây (nếu có phân cấp).
+        \item Tác nhân chọn thao tác: \textit{Thêm mới}, \textit{Chỉnh sửa}, hoặc \textit{Xoá} danh mục.
+        \item Nếu \textit{Thêm mới}/\textit{Chỉnh sửa}: hệ thống hiển thị biểu mẫu; tác nhân nhập thông tin danh mục (tên, mô tả, danh mục cha, hình ảnh đại diện...).
+        \item Tác nhân chọn \textit{Lưu}.
+        \item Hệ thống kiểm tra tính hợp lệ (tên trùng, danh mục cha không hợp lệ...).
+        \item Hệ thống lưu thay đổi và cập nhật danh sách danh mục.
+        \item Kết thúc Use Case.
+    \end{enumerate} \\
+    \hline
+    Luồng sự kiện phụ &
+    \begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=1.2em]
+        \item \textbf{Tên danh mục bị trùng}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Tác nhân nhập tên danh mục đã tồn tại.
+                \item Hệ thống hiển thị thông báo lỗi và yêu cầu nhập tên khác.
+            \end{enumerate}
+        \item \textbf{Danh mục cha không hợp lệ}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Tác nhân chọn danh mục cha là chính danh mục hiện tại hoặc cấp con của nó.
+                \item Hệ thống hiển thị cảnh báo và không cho lưu.
+            \end{enumerate}
+        \item \textbf{Xoá danh mục có sản phẩm con}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Tác nhân chọn xoá danh mục đang chứa sản phẩm.
+                \item Hệ thống cảnh báo và yêu cầu chuyển sản phẩm sang danh mục khác trước khi xoá.
+            \end{enumerate}
+        \item \textbf{Hủy thao tác}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Tác nhân hủy bỏ thao tác đang thực hiện.
+                \item Hệ thống quay lại danh sách danh mục ban đầu.
+            \end{enumerate}
+    \end{enumerate} \\
+    \hline
+    Các yêu cầu đặc biệt &
+    \begin{itemize}
+        \item Cho phép quản lý danh mục theo cấu trúc phân cấp (cha – con).
+        \item Hỗ trợ tải hình ảnh biểu tượng cho danh mục.
+        \item Kiểm tra trùng tên danh mục theo từng cấp.
+        \item Khi thay đổi danh mục cha, hệ thống tự động cập nhật cấu trúc liên quan.
+    \end{itemize} \\
+    \hline
+\end{longtable}
+
+
+\subsection{Usecase Quản lí khuyến mãi}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/usecase quản lí khuyến mãi.png}
+    \caption{Sơ đồ Use Case Quản lí khuyến mãi}
+\end{figure}
+
+\begin{longtable}{|m{4cm}|m{10cm}|}
+    \hline
+    \textbf{Tên Use Case} & \textbf{Quản lí khuyến mãi} \\
+    \hline
+    Tác nhân & Nhân viên \\
+    \hline
+    Mô tả &
+    Cho phép nhân viên tạo, chỉnh sửa, xoá và quản lý các chương trình khuyến mãi của hệ thống. Khuyến mãi có thể áp dụng cho toàn bộ sản phẩm, một nhóm sản phẩm hoặc một danh mục cụ thể, nhằm thúc đẩy doanh số và thu hút khách hàng. \\
+    \hline
+    Điều kiện kích hoạt &
+    Nhân viên chọn chức năng \textit{Quản lí khuyến mãi} trong giao diện quản trị hệ thống. \\
+    \hline
+    Tiền điều kiện &
+    \begin{itemize}
+        \item Tác nhân đã đăng nhập và có quyền truy cập vào chức năng quản lý khuyến mãi.
+        \item Danh sách sản phẩm hoặc danh mục áp dụng khuyến mãi đã tồn tại trong hệ thống.
+    \end{itemize} \\
+    \hline
+    Hậu điều kiện &
+    \begin{itemize}
+        \item \textbf{Nếu thành công:}  
+        Chương trình khuyến mãi được lưu hoặc cập nhật thành công; thông tin được đồng bộ tới các sản phẩm liên quan; hiển thị đúng trên giao diện bán hàng; ghi nhận lịch sử thao tác.
+        \item \textbf{Nếu thất bại:}  
+        Dữ liệu không được thay đổi; hiển thị thông báo lỗi phù hợp (ví dụ: trùng tên, sai thời gian, điều kiện không hợp lệ); người dùng có thể nhập lại hoặc huỷ thao tác.
+    \end{itemize} \\
+    \hline
+    Luồng sự kiện chính &
+    \begin{enumerate}[label=\arabic*.]
+        \item Tác nhân chọn chức năng \textit{Quản lí khuyến mãi}.
+        \item Hệ thống hiển thị danh sách các chương trình khuyến mãi hiện có.
+        \item Tác nhân chọn thao tác: \textit{Thêm mới}, \textit{Chỉnh sửa}, hoặc \textit{Xoá} khuyến mãi.
+        \item Nếu \textit{Thêm mới}/\textit{Chỉnh sửa}: hệ thống hiển thị biểu mẫu; tác nhân nhập thông tin khuyến mãi gồm:
+        \begin{itemize}
+            \item Tên chương trình.
+            \item Mô tả.
+            \item Loại khuyến mãi (giảm theo %, giá cố định, mua X tặng Y, miễn phí vận chuyển...).
+            \item Sản phẩm/danh mục áp dụng.
+            \item Ngày bắt đầu, ngày kết thúc.
+            \item Điều kiện áp dụng (đơn tối thiểu, số lượng tối đa, mã giảm giá...).
+        \end{itemize}
+        \item Tác nhân chọn \textit{Lưu}.
+        \item Hệ thống kiểm tra tính hợp lệ (tên trùng, thời gian, điều kiện áp dụng...).
+        \item Nếu hợp lệ, hệ thống lưu thông tin và cập nhật danh sách khuyến mãi.
+        \item Kết thúc Use Case.
+    \end{enumerate} \\
+    \hline
+    Luồng sự kiện phụ &
+    \begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=1.2em]
+        \item \textbf{Thông tin không hợp lệ}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Tên chương trình bị trùng, thời gian kết thúc sớm hơn thời gian bắt đầu hoặc phần trăm giảm vượt giới hạn.
+                \item Hệ thống hiển thị thông báo lỗi và yêu cầu chỉnh sửa.
+            \end{enumerate}
+        \item \textbf{Xoá khuyến mãi đang hoạt động}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Tác nhân chọn xoá chương trình đang còn hiệu lực.
+                \item Hệ thống cảnh báo và yêu cầu xác nhận trước khi vô hiệu hoá chương trình.
+            \end{enumerate}
+        \item \textbf{Khuyến mãi tự động hết hạn}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Khi đến ngày kết thúc, hệ thống tự động chuyển trạng thái sang “Hết hạn”.
+                \item Các sản phẩm liên quan trở lại giá gốc.
+            \end{enumerate}
+        \item \textbf{Hủy thao tác}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Tác nhân huỷ bỏ thao tác thêm hoặc sửa.
+                \item Hệ thống quay lại danh sách khuyến mãi mà không lưu thay đổi.
+            \end{enumerate}
+    \end{enumerate} \\
+    \hline
+    Các yêu cầu đặc biệt &
+    \begin{itemize}
+        \item Cho phép lọc, tìm kiếm khuyến mãi theo tên, trạng thái, thời gian hiệu lực.
+        \item Hỗ trợ nhiều loại khuyến mãi (theo sản phẩm, danh mục, hóa đơn, mã giảm giá).
+        \item Tự động cập nhật trạng thái khi hết hạn hoặc bị vô hiệu hóa.
+        \item Ngăn trùng lặp các chương trình cùng loại trên cùng sản phẩm.
+        \item Ghi nhận lịch sử thay đổi và người thực hiện thao tác.
+    \end{itemize} \\
+    \hline
+\end{longtable}
+
+
+\subsection{Usecase Quản lí phân quyền}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/usecase quản lí phân quyền.png}
+    \caption{Sơ đồ Use Case Quản lí phân quyền}
+\end{figure}
+
+\begin{longtable}{|m{4cm}|m{10cm}|}
+    \hline
+    \textbf{Tên Use Case} & \textbf{Quản lí phân quyền} \\
+    \hline
+    Tác nhân & Quản trị viên \\
+    \hline
+    Mô tả &
+    Cho phép quản trị viên tạo, chỉnh sửa, xoá và gán quyền truy cập cho người dùng trong hệ thống. Chức năng này giúp đảm bảo mỗi người dùng chỉ được phép thực hiện các thao tác phù hợp với vai trò được phân công, đảm bảo tính bảo mật và toàn vẹn dữ liệu. \\
+    \hline
+    Điều kiện kích hoạt &
+    Quản trị viên chọn chức năng \textit{Quản lí phân quyền} trong giao diện quản trị hệ thống. \\
+    \hline
+    Tiền điều kiện &
+    \begin{itemize}
+        \item Quản trị viên đã đăng nhập vào hệ thống.
+        \item Có quyền truy cập vào chức năng phân quyền.
+        \item Danh sách người dùng đã được tạo trong hệ thống.
+    \end{itemize} \\
+    \hline
+    Hậu điều kiện &
+    \begin{itemize}
+        \item \textbf{Nếu thành công:}  
+        Thông tin vai trò và quyền hạn của người dùng được cập nhật chính xác trong hệ thống; quyền truy cập mới có hiệu lực ngay; hệ thống ghi nhận nhật ký thao tác của quản trị viên.
+        \item \textbf{Nếu thất bại:}  
+        Dữ liệu không thay đổi; hệ thống hiển thị thông báo lỗi (ví dụ: vai trò trùng tên, quyền không hợp lệ, lỗi kết nối...); quản trị viên có thể chỉnh sửa lại hoặc huỷ thao tác.
+    \end{itemize} \\
+    \hline
+    Luồng sự kiện chính &
+    \begin{enumerate}[label=\arabic*.]
+        \item Quản trị viên chọn chức năng \textit{Quản lí phân quyền}.
+        \item Hệ thống hiển thị danh sách các vai trò hiện có và danh sách người dùng trong hệ thống.
+        \item Quản trị viên chọn thao tác: \textit{Thêm mới vai trò}, \textit{Chỉnh sửa quyền}, hoặc \textit{Xoá vai trò}.
+        \item Nếu \textit{Thêm mới}/\textit{Chỉnh sửa}: hệ thống hiển thị biểu mẫu cho phép nhập thông tin vai trò (tên, mô tả) và chọn các quyền tương ứng (xem, thêm, sửa, xoá...).
+        \item Quản trị viên chọn \textit{Lưu}.
+        \item Hệ thống kiểm tra tính hợp lệ (tên vai trò trùng, quyền không hợp lệ...).
+        \item Hệ thống lưu thay đổi và cập nhật quyền truy cập cho người dùng có vai trò đó.
+        \item Kết thúc Use Case.
+    \end{enumerate} \\
+    \hline
+    Luồng sự kiện phụ &
+    \begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=1.2em]
+        \item \textbf{Tên vai trò bị trùng}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Quản trị viên nhập tên vai trò đã tồn tại trong hệ thống.
+                \item Hệ thống hiển thị thông báo lỗi và yêu cầu nhập tên khác.
+            \end{enumerate}
+        \item \textbf{Quyền không hợp lệ}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Quản trị viên chọn quyền không có trong danh sách hoặc vượt quyền cho phép.
+                \item Hệ thống hiển thị cảnh báo và không cho lưu.
+            \end{enumerate}
+        \item \textbf{Xoá vai trò đang được sử dụng}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Quản trị viên chọn xoá vai trò đang được gán cho người dùng.
+                \item Hệ thống cảnh báo và yêu cầu chuyển người dùng sang vai trò khác trước khi xoá.
+            \end{enumerate}
+        \item \textbf{Hủy thao tác}
+            \begin{enumerate}[label*=\arabic*.]
+                \item Quản trị viên huỷ thao tác thêm hoặc sửa vai trò.
+                \item Hệ thống quay lại danh sách vai trò ban đầu mà không lưu thay đổi.
+            \end{enumerate}
+    \end{enumerate} \\
+    \hline
+    Các yêu cầu đặc biệt &
+    \begin{itemize}
+        \item Hỗ trợ gán quyền chi tiết cho từng module: sản phẩm, đơn hàng, danh mục, khách hàng, khuyến mãi...
+        \item Cho phép sao chép hoặc nhân bản vai trò để tạo nhanh vai trò mới.
+        \item Lưu lịch sử thay đổi quyền và người thực hiện.
+        \item Áp dụng cơ chế RBAC (Role-Based Access Control) để đảm bảo an toàn truy cập.
+    \end{itemize} \\
+    \hline
+\end{longtable}
 
