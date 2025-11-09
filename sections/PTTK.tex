@@ -122,3 +122,51 @@
     Các yêu cầu đặc biệt & Không có \\
     \hline
 \end{longtable}
+
+\subsection{Usecase đăng xuất}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/usecase đăng nhập.png}
+    \caption{Sơ đồ usecase đăng xuất}
+\end{figure}
+
+\begin{longtable}{|m{4cm}|m{10cm}|}
+    \hline
+    \textbf{Tên Use Case} & \textbf{Đăng ký} \\
+    \hline
+    Tác nhân & Người dùng \\
+    \hline
+    Mô tả & Tác nhân sử dụng usecase này để đăng nhập vào hệ thống\\
+    \hline
+    Điều kiện kích hoạt & Chọn chức năng đăng nhập ở hệ thống  \\
+    \hline
+    Tiền điệu kiện & Tác nhân chưa đăng nhập vào hệ thống \\
+    \hline
+    Hậu diều kiện & 
+    \begin{itemize}
+        \item Nếu thành công: Hệ thống sẽ hiển thị giao diện chính. Người dùng có thể thực hiện các chức năng theo đúng quyền hạn của mình
+        \item Nếu thất bại: Hệ thống sẽ đưa ra thông báo "Thông tin đăng nhập không hợp lệ" và yêu cầu đăng nhập lại.
+    \end{itemize} \\
+    \hline
+    Luồng sự kiện chính & 
+    \begin{enumerate}[label=\arabic{*}.]
+        \item Hệ thống hiển thị giao diện đăng nhập.
+        \item Người dùng nhập tài khoản bao gồm tên đăng nhập và mật khẩu.
+        \item Hệ thống kiểm tra và xác nhận thông tin đăng nhập.
+        \item Hiển thị giao diện chính tùy vào vai trò của tài khoản đăng nhập là người dùng hay admin.
+        \item Kết thúc usecase.
+    \end{enumerate} \\
+    \hline
+    Luồng sự kiện phụ & 
+        \begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=1.2em]
+        \item \textbf{Thông tin email hoặc mật khẩu sai}
+            \begin{enumerate}[label*=\arabic*.]
+            \item Người dùng nhập thông tin sai
+            \item Hệ thống báo lỗi
+            \item Kết thúc Use Case
+            \end{enumerate}
+        \end{enumerate} \\
+    \hline
+    Các yêu cầu đặc biệt & Không có \\
+    \hline
+\end{longtable}
